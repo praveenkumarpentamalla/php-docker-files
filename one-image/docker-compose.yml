@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  civil-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: civil-app
+    ports:
+      - "8000:8000"
+      - "3001:3001"
+      - "6379:6379"
+    env_file:
+      - .env
+      - ./socket-server/.env
+    volumes:
+      - ./app:/var/www/html/app
+      - ./bootstrap:/var/www/html/bootstrap
+      - ./config:/var/www/html/config
+      - ./database:/var/www/html/database
+      - ./public:/var/www/html/public
+      - ./resources:/var/www/html/resources
+      - ./routes:/var/www/html/routes
+      - ./storage:/var/www/html/storage
+      - ./socket-server:/var/www/html/socket-server
+      - ./.env:/var/www/html/.env
+    restart: unless-stopped
+
+# Remove the volumes section since we're not using external Redis anymore
