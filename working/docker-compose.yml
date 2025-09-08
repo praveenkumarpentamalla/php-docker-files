@@ -1,0 +1,26 @@
+services:
+  civil-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: civil-app
+    ports:
+      - "8000:8000"   # Laravel
+      - "3001:3001"   # Socket server
+      - "6379:6379"   # Redis
+    env_file:
+      - .env
+      - ./socket-server/.env
+    volumes:
+      - ./app:/var/www/html/app
+      - ./bootstrap:/var/www/html/bootstrap
+      - ./config:/var/www/html/config
+      - ./database:/var/www/html/database
+      - ./public:/var/www/html/public
+      - ./resources:/var/www/html/resources
+      - ./routes:/var/www/html/routes
+      - ./storage:/var/www/html/storage
+      - ./socket-server:/var/www/html/socket-server:cached
+      - /var/www/html/socket-server/node_modules
+      - ./.env:/var/www/html/.env
+    restart: unless-stopped
